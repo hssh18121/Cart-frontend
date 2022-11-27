@@ -7,14 +7,15 @@ const Table = (props) => {
       <table>
         <thead>
           <tr>
-            <th style={{ width: "80px" }}></th>
-            <th>Name</th>
-            <th>Number ordered</th>
+            <th>Image</th>
+            <th className="p-name">Product Name</th>
             <th>Price</th>
-            <th style={{ textAlign: "center" }}>Remove</th>
+            <th>Quantity</th>
+            <th>Total</th>
+            <th>Delete</th>
+            <th>Edit</th>
           </tr>
         </thead>
-
         <tbody>
           {props.itemData.map((element) => (
             <Item
@@ -24,30 +25,9 @@ const Table = (props) => {
               image={element.image}
               price={element.price}
               onDelete={props.onDeleteItem}
+              onGetItemQuantity={props.onGetQuantity}
             />
           ))}
-
-          {/* <Item
-            id={props.itemData[0].id}
-            title={props.itemData[0].title}
-            image={props.itemData[0].image}
-            quantity={props.itemData[0].quantity}
-            price={props.itemData[0].price}
-          />
-          <Item
-            id={props.itemData[1].id}
-            title={props.itemData[1].title}
-            image={props.itemData[1].image}
-            quantity={props.itemData[1].quantity}
-            price={props.itemData[1].price}
-          />
-          <Item
-            id={props.itemData[2].id}
-            title={props.itemData[2].title}
-            image={props.itemData[2].image}
-            quantity={props.itemData[2].quantity}
-            price={props.itemData[2].price}
-          /> */}
         </tbody>
       </table>
     </React.Fragment>

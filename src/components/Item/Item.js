@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 const Item = (props) => {
   const [enteredQuantity, setEnteredQuantity] = useState(1);
@@ -7,14 +7,21 @@ const Item = (props) => {
   // }, []);
 
   function quantityChangeHandler(event) {
-    setEnteredQuantity(event.target.value);
+    setEnteredQuantity(Number(event.target.value) || 0);
+    props.onGetItemQuantity(Number(event.target.value) || 0, props.id);
   }
 
   const addQuantity = () => {
-    if (enteredQuantity < 100) setEnteredQuantity(enteredQuantity + 1);
+    if (enteredQuantity < 100) {
+      setEnteredQuantity(enteredQuantity + 1);
+      props.onGetItemQuantity(enteredQuantity + 1, props.id);
+    }
   };
   const subtractQuantity = () => {
-    if (enteredQuantity > 0) setEnteredQuantity(enteredQuantity - 1);
+    if (enteredQuantity > 0) {
+      setEnteredQuantity(enteredQuantity - 1);
+      props.onGetItemQuantity(enteredQuantity - 1, props.id);
+    }
   };
 
   const deleteHandler = () => {
@@ -25,58 +32,41 @@ const Item = (props) => {
   return (
     <React.Fragment>
       <tr>
-        <th>
+        <td className="cart-pic first-row">
           <img
-            src={require("../../img/nguyen_nhat_anh.jpg")}
-            // src={`${props.image}`}
-            className="product-image"
+            src={require("../../img/cart-page/product-2.jpg")}
             alt="Product"
           />
-        </th>
-        <th>{props.title}</th>
-        <td style={{ textAlign: "center" }}>
-          <div className="quantity-controller-container">
-            <div className="minus-icon-container">
-              {/* <a href="#"> */}
-              <ion-icon
-                name="remove-outline"
-                className="ion-icon"
-                id="minus-add-ion-icon"
-                onClick={subtractQuantity}
-              ></ion-icon>
-              {/* </a> */}
-            </div>
-            <input
-              // value="2"
-              className="input-quantity"
-              type="number"
-              min="0"
-              max="100"
-              value={enteredQuantity}
-              onChange={quantityChangeHandler}
-              required
-            />
-            <div className="add-icon-container">
-              {/* <a href="#"> */}
-              <ion-icon
-                name="add-outline"
-                className="ion-icon"
-                id="minus-add-ion-icon"
-                onClick={addQuantity}
-              ></ion-icon>
-              {/* </a> */}
+        </td>
+        <td className="cart-title first-row">
+          <h5>{props.title}</h5>
+        </td>
+        <td className="p-price first-row">${props.price} </td>
+        <td className="qua-col first-row">
+          <div className="quantity ">
+            <div className="pro-qty">
+              <span className="dec qtybtn" onClick={subtractQuantity}>
+                -
+              </span>
+              <input
+                type="text"
+                value={enteredQuantity}
+                onChange={quantityChangeHandler}
+              />
+              <span className="inc qtybtn" onClick={addQuantity}>
+                +
+              </span>
             </div>
           </div>
         </td>
-        <td>{props.price * enteredQuantity} VND</td>
-        <td style={{ textAlign: "center" }}>
-          {/* <a href="#"> */}
-          <ion-icon
-            name="trash-bin"
-            id="trash-ion-icon"
-            onClick={deleteHandler}
-          ></ion-icon>
-          {/* </a> */}
+        <td className="total-price first-row">
+          ${props.price * enteredQuantity}
+        </td>
+        <td className="close-td first-row">
+          <i className="ti-close" onClick={deleteHandler}></i>
+        </td>
+        <td className="close-td first-row">
+          <i className="ti-save"></i>
         </td>
       </tr>
     </React.Fragment>
