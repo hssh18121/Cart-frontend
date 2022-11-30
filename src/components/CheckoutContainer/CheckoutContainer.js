@@ -1,18 +1,29 @@
 import React, { useState } from "react";
 import CheckoutForm from "../CheckoutForm/CheckoutForm";
 const CheckoutContainer = (props) => {
-  const [activeModal, setActiveModal] = useState(false);
-  const activeModalHandler = () => {
-    setActiveModal(true);
+  const [validInfo, setValidInfo] = useState(false);
+  const checkValid = (isValid) => {
+    if (isValid) {
+      setValidInfo(true);
+    } else {
+      setValidInfo(false);
+    }
   };
-  const modalHandler = () => {
-    setActiveModal(false);
+
+  const submitHandler = (event) => {
+    if (!validInfo) {
+      event.preventDefault();
+      props.submitSuccess(false);
+    } else {
+      props.submitSuccess(true);
+    }
   };
+
   return (
     <React.Fragment>
       <form className="row remove-margin-left-to-row">
         <div className="display-flex">
-          <CheckoutForm closeModal={modalHandler} />
+          <CheckoutForm checkValid={checkValid} />
           <div className="col-lg-4  proceed-checkout add-end-to-proceed-checkout">
             <ul>
               <li className="subtotal">
@@ -26,7 +37,7 @@ const CheckoutContainer = (props) => {
               type="submit"
               style={{ width: "100%" }}
               className="proceed-btn"
-              onClick={activeModalHandler}
+              onClick={submitHandler}
               value="THANH TOÁN"
             />
           </div>

@@ -1,18 +1,95 @@
-import React from "react";
+import React, { useState } from "react";
+import validator from "validator";
 
 const CheckoutForm = (props) => {
+  const [emptyNameField, setEmptyNameField] = useState(true);
+  const [emptyAddressField, setEmptyAddressField] = useState(true);
+  const [phoneMessage, setPhoneMessage] = useState([false, ""]);
+  const [emailMessage, setEmailMessage] = useState([false, ""]);
+
+  const checkEmptyNameField = (e) => {
+    var input = e.target.value;
+    checkAllValid();
+    if (input.length === 0) {
+      setEmptyNameField(true);
+    } else {
+      setEmptyNameField(false);
+    }
+  };
+
+  const checkEmptyAddressField = (e) => {
+    var input = e.target.value;
+
+    if (input.length === 0) {
+      setEmptyAddressField(true);
+    } else {
+      setEmptyAddressField(false);
+    }
+  };
+
+  const validatePhone = (e) => {
+    var phone = e.target.value;
+    if (phone.length === 0) {
+      setPhoneMessage([false, ""]);
+    } else {
+      if (
+        validator.isMobilePhone(phone) &&
+        (phone.length === 10 || phone[0] === "+")
+      ) {
+        setPhoneMessage([true, ""]);
+      } else {
+        setPhoneMessage([false, "Vui lòng nhập số điện thoại hợp lệ"]);
+      }
+    }
+  };
+
+  const validateEmail = (e) => {
+    var email = e.target.value;
+    if (email.length === 0) {
+      setEmailMessage([false, ""]);
+    } else {
+      if (validator.isEmail(email)) {
+        setEmailMessage([true, ""]);
+      } else {
+        setEmailMessage([false, "Vui lòng nhập vào địa chỉ email hợp lệ"]);
+      }
+    }
+  };
+
+  const checkAllValid = () => {
+    if (
+      !emptyNameField &&
+      !emptyAddressField &&
+      emailMessage[0] &&
+      phoneMessage[0]
+    ) {
+      console.log("abc");
+      props.checkValid(true);
+    } else {
+      console.log("def");
+      props.checkValid(false);
+    }
+  };
+
   return (
     <React.Fragment>
       <div class="form-container">
-        <div className="fill-in-notify-text">Thông tin giao hàng:</div>
+        <div className="fill-in-notify-text">Thông tin giao hàng (*):</div>
         <div>
           <div className="form-display-flex">
             <div className="seperate-input-column">
               <input
                 className="input-field"
                 placeholder="Nhập địa chỉ giao hàng"
+                onChange={(e) => checkEmptyAddressField(e)}
+                required
               />
-              <input className="input-field" placeholder="Số điện thoại" />
+              <input
+                className="input-field"
+                placeholder="Số điện thoại"
+                onChange={(e) => validatePhone(e)}
+                required
+              />
             </div>
             <div className="seperate-input-column">
               <input
@@ -20,9 +97,16 @@ const CheckoutForm = (props) => {
                 placeholder="Địa chỉ email"
                 for="email"
                 type="email"
+                onChange={(e) => validateEmail(e)}
                 required
               />
-              <input className="input-field" placeholder="Họ và tên" />
+
+              <input
+                className="input-field"
+                placeholder="Họ và tên"
+                required
+                onChange={(e) => checkEmptyNameField(e)}
+              />
             </div>
           </div>
           <div>
@@ -33,7 +117,21 @@ const CheckoutForm = (props) => {
               placeholder="Nhập các yêu cầu khác"
             />
           </div>
-          <div></div>
+          <div className={phoneMessage[0] ? "text-success" : "text-danger"}>
+            {phoneMessage[1]}
+          </div>
+          <div className={emailMessage[0] ? "text-success" : "text-danger"}>
+            {emailMessage[1]}
+          </div>
+
+          <div className="text-success">
+            {!emptyNameField &&
+            !emptyAddressField &&
+            emailMessage[0] &&
+            phoneMessage[0]
+              ? "Thông tin hợp lệ"
+              : ""}
+          </div>
         </div>
       </div>
     </React.Fragment>

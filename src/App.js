@@ -47,7 +47,7 @@ function App() {
   const [total, setTotal] = useState(
     items.reduce((sum, { quantity, price }) => sum + price * quantity, 0)
   );
-
+  const [finishSubmit, setFinishSubmit] = useState(false);
   const deleteItemHandler = (id) => {
     setItems((items) => {
       const updatedItems = items.filter((item) => item.id !== id);
@@ -84,6 +84,14 @@ function App() {
     return total;
   };
 
+  const submitSuccess = (bool) => {
+    if (bool) {
+      setItems([]);
+      setFinishSubmit(true);
+    } else {
+      setFinishSubmit(false);
+    }
+  };
   return (
     <React.Fragment>
       {/* {typeof backendData.data === "undefined" ? (
@@ -120,10 +128,19 @@ function App() {
                   />
                 )}
               </div>
-              {items.length !== 0 && <CheckoutContainer total={total} />}
+              {items.length !== 0 && (
+                <CheckoutContainer
+                  total={total}
+                  submitSuccess={submitSuccess}
+                />
+              )}
               {items.length === 0 && (
                 <div style={{ height: "55vh" }}>
-                  <h3>Không có sản phẩm trong giỏ hàng </h3>
+                  <h3>
+                    {!finishSubmit
+                      ? "Không có sản phẩm trong giỏ hàng"
+                      : "Thanh toán thành công!"}{" "}
+                  </h3>
                   <button>Tiếp tục mua sắm</button>
                 </div>
               )}
