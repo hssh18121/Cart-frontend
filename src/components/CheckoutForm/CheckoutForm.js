@@ -3,60 +3,39 @@ import React from "react";
 const CheckoutForm = (props) => {
   return (
     <React.Fragment>
-      <section
-        className={"section-cta modal  hidden-section"}
-        style={{ background: "#fff" }}
-      >
+      <div class="form-container">
+        <div className="fill-in-notify-text">Thông tin giao hàng:</div>
         <div>
-          <div>
-            <button className="close-modal" onClick={props.closeModal}>
-              &times;
-            </button>
-            <div className="cta-text-box">
-              <h2 className="heading-secondary">
-                Please provide us your information!
-              </h2>
-
-              <form className="cta-form" action="#">
-                <div>
-                  <label htmlFor="full-name">Full Name</label>
-                  <input
-                    id="full-name"
-                    type="text"
-                    placeholder="John Smith"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="email">Email address</label>
-                  <input
-                    id="email"
-                    type="email"
-                    placeholder="me@example.com"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="address">Your address</label>
-                  <input
-                    id="address"
-                    type="address"
-                    placeholder="123 Street 1 District"
-                    required
-                  />
-                </div>
-
-                <button className="btn btn--form" id="submit-btn">
-                  Checkout!
-                </button>
-              </form>
+          <div className="form-display-flex">
+            <div className="seperate-input-column">
+              <input
+                className="input-field"
+                placeholder="Nhập địa chỉ giao hàng"
+              />
+              <input className="input-field" placeholder="Số điện thoại" />
+            </div>
+            <div className="seperate-input-column">
+              <input
+                className="input-field"
+                placeholder="Địa chỉ email"
+                for="email"
+                type="email"
+                required
+              />
+              <input className="input-field" placeholder="Họ và tên" />
             </div>
           </div>
+          <div>
+            <div>Yêu cầu khác:</div>
+            <textarea
+              type="text"
+              className="textarea-styling"
+              placeholder="Nhập các yêu cầu khác"
+            />
+          </div>
+          <div></div>
         </div>
-      </section>
-      <div className="overlay"></div>
+      </div>
     </React.Fragment>
   );
 };

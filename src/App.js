@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Table from "./components/Table/Table";
 import CheckoutContainer from "./components/CheckoutContainer/CheckoutContainer";
@@ -15,7 +15,7 @@ function App() {
     {
       id: "item2",
       image: "../../img/cart-page/product-1.jpg",
-      title: "Italian Lobster",
+      title: "Áo Len Extra Fine Merino Cổ Tròn Dài Tay",
       quantity: 1,
       price: 60,
     },
@@ -34,6 +34,16 @@ function App() {
       price: 205,
     },
   ]);
+
+  const [backendData, setBackendData] = useState([{}]);
+  useEffect(() => {
+    fetch("/cart_api/api/order/read.php")
+      .then((response) => response.json())
+      .then((data) => {
+        setBackendData(data);
+      });
+  }, []);
+
   const [total, setTotal] = useState(
     items.reduce((sum, { quantity, price }) => sum + price * quantity, 0)
   );
@@ -76,16 +86,21 @@ function App() {
 
   return (
     <React.Fragment>
+      {/* {typeof backendData.data === "undefined" ? (
+        <p>Loading....</p>
+      ) : (
+        backendData.data.map((testData, i) => <p>{testData.address}</p>)
+      )} */}
       <div className="breacrumb-section">
         <div className="container">
           <div className="row">
             <div className="col-lg-12">
               <div className="breadcrumb-text product-more">
                 <a href="./home.html">
-                  <i class="fa fa-home"></i> Home
+                  <i class="fa fa-home"></i> Trang chủ
                 </a>
-                <a href="./shop.html">Shop</a>
-                <span>Shopping Cart</span>
+                <a href="./shop.html">Cửa hàng</a>
+                <span>Giỏ hàng</span>
               </div>
             </div>
           </div>
@@ -97,13 +112,21 @@ function App() {
           <div className="row">
             <div className="col-lg-12">
               <div className="cart-table">
-                <Table
-                  itemData={items}
-                  onDeleteItem={deleteItemHandler}
-                  onGetQuantity={updateItems}
-                />
+                {items.length !== 0 && (
+                  <Table
+                    itemData={items}
+                    onDeleteItem={deleteItemHandler}
+                    onGetQuantity={updateItems}
+                  />
+                )}
               </div>
-              <CheckoutContainer total={total} />
+              {items.length !== 0 && <CheckoutContainer total={total} />}
+              {items.length === 0 && (
+                <div style={{ height: "55vh" }}>
+                  <h3>Không có sản phẩm trong giỏ hàng </h3>
+                  <button>Tiếp tục mua sắm</button>
+                </div>
+              )}
             </div>
           </div>
         </div>

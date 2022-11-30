@@ -1,6 +1,7 @@
 {
   "name": "react-the-complete-guide",
   "version": "0.1.0",
+  "proxy": "http://localhost",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.2.1",

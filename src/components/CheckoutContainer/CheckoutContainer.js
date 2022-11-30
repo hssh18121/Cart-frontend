@@ -10,24 +10,28 @@ const CheckoutContainer = (props) => {
   };
   return (
     <React.Fragment>
-      <div className="row">
-        <div className="col-lg-4 offset-lg-8">
-          <div className="proceed-checkout">
+      <form className="row remove-margin-left-to-row">
+        <div className="display-flex">
+          <CheckoutForm closeModal={modalHandler} />
+          <div className="col-lg-4  proceed-checkout add-end-to-proceed-checkout">
             <ul>
               <li className="subtotal">
-                Subtotal <span>$240.00</span>
+                Mã giảm giá: <span>Chọn mã</span>
               </li>
               <li className="cart-total">
-                Total <span>${props.total}</span>
+                Tổng: <span>${props.total}</span>
               </li>
             </ul>
-            <a href={"google.com"} className="proceed-btn">
-              PROCEED TO CHECK OUT
-            </a>
+            <input
+              type="submit"
+              style={{ width: "100%" }}
+              className="proceed-btn"
+              onClick={activeModalHandler}
+              value="THANH TOÁN"
+            />
           </div>
         </div>
-      </div>
-      {activeModal && <CheckoutForm closeModal={modalHandler} />}
+      </form>
     </React.Fragment>
   );
 };

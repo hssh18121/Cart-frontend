@@ -7,13 +7,12 @@ const Table = (props) => {
       <table>
         <thead>
           <tr>
-            <th>Image</th>
-            <th className="p-name">Product Name</th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th>Total</th>
-            <th>Delete</th>
-            <th>Edit</th>
+            <th>Ảnh</th>
+            <th className="p-name">Tên sản phẩm</th>
+            <th>Giá</th>
+            <th>Số lượng</th>
+            <th>Tổng</th>
+            <th>Xóa</th>
           </tr>
         </thead>
         <tbody>

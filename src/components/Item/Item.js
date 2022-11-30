@@ -18,7 +18,7 @@ const Item = (props) => {
     }
   };
   const subtractQuantity = () => {
-    if (enteredQuantity > 0) {
+    if (enteredQuantity > 1) {
       setEnteredQuantity(enteredQuantity - 1);
       props.onGetItemQuantity(enteredQuantity - 1, props.id);
     }
@@ -36,6 +36,7 @@ const Item = (props) => {
           <img
             src={require("../../img/cart-page/product-2.jpg")}
             alt="Product"
+            className="product-img"
           />
         </td>
         <td className="cart-title first-row">
@@ -64,9 +65,6 @@ const Item = (props) => {
         </td>
         <td className="close-td first-row">
           <i className="ti-close" onClick={deleteHandler}></i>
-        </td>
-        <td className="close-td first-row">
-          <i className="ti-save"></i>
         </td>
       </tr>
     </React.Fragment>
