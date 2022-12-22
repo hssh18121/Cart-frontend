@@ -34,7 +34,8 @@ const Item = (props) => {
       <tr>
         <td className="cart-pic first-row">
           <img
-            src={require("../../img/cart-page/product-2.jpg")}
+            src={require(`../../img/cart-page/product-${props.id}.jpg`)}
+            // src={require(`${props.image}`)}
             alt="Product"
             className="product-img"
           />

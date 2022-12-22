@@ -124,14 +124,16 @@ const CheckoutForm = (props) => {
             {emailMessage[1]}
           </div>
 
-          <div className="text-success">
-            {!emptyNameField &&
-            !emptyAddressField &&
-            emailMessage[0] &&
-            phoneMessage[0]
-              ? "Thông tin hợp lệ"
-              : ""}
-          </div>
+          {!emptyNameField &&
+          !emptyAddressField &&
+          emailMessage[0] &&
+          phoneMessage[0] ? (
+            <div className="text-success">Thông tin hợp lệ </div>
+          ) : (
+            <div className="text-danger">
+              Vui lòng nhập vào thông tin hợp lệ
+            </div>
+          )}
         </div>
       </div>
     </React.Fragment>

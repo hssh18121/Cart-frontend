@@ -4433,3 +4433,7 @@ ol {
 .remove-margin-left-to-row {
   margin-left: 0;
 }
+
+.notify-to-user {
+  margin-bottom: 20px;
+}
