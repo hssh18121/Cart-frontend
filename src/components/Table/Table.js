@@ -13,6 +13,7 @@ const Table = (props) => {
             <th>Số lượng</th>
             <th>Tổng</th>
             <th>Xóa</th>
+            <th>Khuyến mãi</th>
           </tr>
         </thead>
         <tbody>

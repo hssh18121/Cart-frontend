@@ -67,6 +67,7 @@ const Item = (props) => {
         <td className="close-td first-row">
           <i className="ti-close" onClick={deleteHandler}></i>
         </td>
+        <td className="close-td first-row">Chọn mã</td>
       </tr>
     </React.Fragment>
   );
