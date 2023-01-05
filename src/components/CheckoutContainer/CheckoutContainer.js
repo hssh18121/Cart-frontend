@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import CheckoutForm from "../CheckoutForm/CheckoutForm";
 import validator from "validator";
+import SaleoffModal from "../Modal/SaleoffModal";
+import "./CheckoutContainer.css";
 const CheckoutContainer = (props) => {
   const [validInfo, setValidInfo] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+
   const checkValid = (isValid) => {
     if (isValid) {
       setValidInfo(true);
@@ -20,6 +24,13 @@ const CheckoutContainer = (props) => {
     }
   };
 
+  const openModalHandler = () => {
+    setOpenModal(true);
+  };
+
+  const closeModalHandler = () => {
+    setOpenModal(false);
+  };
   const [emptyNameField, setEmptyNameField] = useState(true);
   const [emptyAddressField, setEmptyAddressField] = useState(true);
   const [phoneMessage, setPhoneMessage] = useState([false, ""]);
@@ -90,6 +101,7 @@ const CheckoutContainer = (props) => {
   };
   return (
     <React.Fragment>
+      {openModal && <SaleoffModal onClose={closeModalHandler} />}
       <form className="row remove-margin-left-to-row">
         <div className="display-flex">
           {/* <CheckoutForm checkValid={checkValid} /> */}
@@ -159,7 +171,10 @@ const CheckoutContainer = (props) => {
           <div className="col-lg-4  proceed-checkout add-end-to-proceed-checkout">
             <ul>
               <li className="subtotal">
-                Mã giảm giá: <span>Chọn mã</span>
+                Mã giảm giá:{" "}
+                <span className="add-cursor-pointer" onClick={openModalHandler}>
+                  Chọn mã
+                </span>
               </li>
               <li className="cart-total">
                 Tổng: <span>${props.total}</span>
