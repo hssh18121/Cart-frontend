@@ -7,7 +7,7 @@ import HomePage from "./components/HomePage/HomePage";
 function App() {
   return (
     <Routes>
-      <Route exact path="/" element={<Cart />} />
+      <Route exact path="/Cart-frontend" element={<Cart />} />
       <Route exact path="/home" element={<HomePage />} />
     </Routes>
   );
