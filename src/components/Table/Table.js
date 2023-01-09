@@ -13,19 +13,20 @@ const Table = (props) => {
             <th>Số lượng</th>
             <th>Tổng</th>
             <th>Xóa</th>
-            <th>Khuyến mãi</th>
           </tr>
         </thead>
         <tbody>
           {props.itemData.map((element) => (
             <Item
-              key={element.id}
-              id={element.id}
+              key={element.product_id}
+              id={element.product_id}
               title={element.title}
               image={element.image}
               price={element.price}
+              quantity={element.quantity}
               onDelete={props.onDeleteItem}
               onGetItemQuantity={props.onGetQuantity}
+              onGetItemPrice={props.onGetItemPrice}
             />
           ))}
         </tbody>

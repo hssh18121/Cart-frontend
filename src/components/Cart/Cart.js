@@ -2,69 +2,38 @@ import React from "react";
 import { useEffect, useState } from "react";
 import Table from "../Table/Table";
 import CheckoutContainer from "../CheckoutContainer/CheckoutContainer";
-import { Navigate, Outlet } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import SaleoffModal from "../Modal/SaleoffModal";
 const Cart = () => {
-  const [items, setItems] = useState([
-    {
-      id: "1",
-      image: "../../img/cart-page/product-2.jpg",
-      title: "Áo Polo Dry Vải Pique",
-      quantity: 1,
-      price: 100,
-    },
-    {
-      id: "2",
-      image: "../../img/cart-page/product-1.jpg",
-      title: "Áo Len Extra Fine Merino ",
-      quantity: 1,
-      price: 60,
-    },
-    {
-      id: "3",
-      image: "../../img/cart-page/product-3.jpg",
-      title: "Áo Kiểu Vải Rayon Dài Tay",
-      quantity: 1,
-      price: 200,
-    },
-    {
-      id: "4",
-      image: "../../img/cart-page/product-1.jpg",
-      title: "Áo Hoodie Fine Merino",
-      quantity: 1,
-      price: 205,
-    },
-  ]);
+  const { id } = useParams();
+  console.log(id);
+  const [items, setItems] = useState([]);
 
-  const [backendData, setBackendData] = useState([{}]);
   useEffect(() => {
-    fetch("/cart_api/api/order/read.php")
+    fetch(
+      `https://sp11-cart-backend.000webhostapp.com/api/carts_details/show.php?cart_id=${id}`
+    )
       .then((response) => response.json())
       .then((data) => {
-        setBackendData(data);
+        setItems(data.data);
+        // console.log(data);
       });
   }, []);
 
-  const [total, setTotal] = useState(
-    items.reduce((sum, { quantity, price }) => sum + price * quantity, 0)
-  );
+  const [total, setTotal] = useState();
+  // items.reduce((sum, { quantity, price }) => sum + price * quantity, 0)
   const [finishSubmit, setFinishSubmit] = useState(false);
   const deleteItemHandler = (id) => {
     setItems((items) => {
-      const updatedItems = items.filter((item) => item.id !== id);
-      calculatingTotal(updatedItems);
+      const updatedItems = items.filter((item) => item.product_id !== id);
+      // calculatingTotal(updatedItems);
       return updatedItems;
     });
   };
 
   const updateItems = (quantity, id) => {
     setItems((items) => {
-      // const updatedItems = items.map((item) =>
-      //   item.id === id ? (item.quantity = quantity) : item.quantity
-      // );
-      // console.log(quantity);
-      // return updatedItems;
-      const objIndex = items.findIndex((obj) => obj.id === id);
+      const objIndex = items.findIndex((obj) => obj.product_id === id);
       items[objIndex].quantity = quantity;
       console.log(items[objIndex].quantity);
       calculatingTotal(items);
@@ -73,10 +42,6 @@ const Cart = () => {
   };
 
   const calculatingTotal = (items) => {
-    // const total = items.reduce(
-    //   (a, b) => Number(a.quantity * a.price) + Number(b.quantity * b.price)
-
-    // );
     const total = items.reduce(
       (sum, { quantity, price }) => sum + price * quantity,
       0
@@ -87,33 +52,28 @@ const Cart = () => {
 
   const submitSuccess = (bool) => {
     if (bool) {
-      console.log(items);
-      // fetch("http://localhost:5000/checkout", {
-      //   method: "POST",
-      //   crossDomain: true,
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //     Accept: "application/json",
-      //     "Access-Control-Allow-Origin": "*",
-      //   },
-      //   body: JSON.stringify({
-      //     items,
-      //   }),
-      // })
-      //   .then((res) => res.json())
-      //   .then((data) => {
-      //     console.log(data, "sendCheckoutInfo");
-      //     if (data.status === "success") {
-      //       alert("Checkout Successfully");
-      //       window.location.href = "./checkout";
-      //     }
-      //   });
       setItems([]);
       setFinishSubmit(true);
     } else {
       setFinishSubmit(false);
     }
   };
+
+  const getItemPrice = (price, id) => {
+    setItems((items) => {
+      const objIndex = items.findIndex((obj) => obj.product_id === id);
+
+      if (price) {
+        items[objIndex].price = price;
+      } else {
+        items[objIndex].price = 0;
+      }
+      console.log(items[objIndex].price);
+      calculatingTotal(items);
+      return items;
+    });
+  };
+
   return (
     <React.Fragment>
       <div className="breacrumb-section">
@@ -141,11 +101,13 @@ const Cart = () => {
                     itemData={items}
                     onDeleteItem={deleteItemHandler}
                     onGetQuantity={updateItems}
+                    onGetItemPrice={getItemPrice}
                   />
                 )}
               </div>
               {items.length !== 0 && (
                 <CheckoutContainer
+                  itemData={items}
                   total={total}
                   submitSuccess={submitSuccess}
                 />
@@ -155,10 +117,12 @@ const Cart = () => {
                   <h3 className="notify-to-user">
                     {!finishSubmit
                       ? "Không có sản phẩm trong giỏ hàng"
-                      : "Thanh toán thành công!"}{" "}
+                      : "Checkout giỏ hàng thành công!"}
                   </h3>
                   <button className="continue-shopping-button btn btn-dark">
-                    Tiếp tục mua sắm
+                    {!finishSubmit
+                      ? "Quay về trang chủ"
+                      : "Chuyển đến thanh toán"}
                   </button>
                 </div>
               )}

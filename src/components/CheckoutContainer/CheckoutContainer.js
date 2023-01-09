@@ -101,7 +101,9 @@ const CheckoutContainer = (props) => {
   };
   return (
     <React.Fragment>
-      {openModal && <SaleoffModal onClose={closeModalHandler} />}
+      {openModal && (
+        <SaleoffModal onClose={closeModalHandler} itemData={props.itemData} />
+      )}
       <form className="row remove-margin-left-to-row">
         <div className="display-flex">
           {/* <CheckoutForm checkValid={checkValid} /> */}
@@ -171,13 +173,13 @@ const CheckoutContainer = (props) => {
           <div className="col-lg-4  proceed-checkout add-end-to-proceed-checkout">
             <ul>
               <li className="subtotal">
-                Mã giảm giá:{" "}
+                Mã giảm giá:
                 <span className="add-cursor-pointer" onClick={openModalHandler}>
                   Chọn mã
                 </span>
               </li>
               <li className="cart-total">
-                Tổng: <span>${props.total}</span>
+                Tổng: <span>{props.total}Đ</span>
               </li>
             </ul>
             <input

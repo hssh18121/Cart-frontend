@@ -1,11 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const Item = (props) => {
   const [enteredQuantity, setEnteredQuantity] = useState(1);
   // useEffect(() => {
   //   setEnteredQuantity(1);
   // }, []);
-
+  const [itemDetailData, setItemDetailData] = useState();
+  useEffect(() => {
+    fetch(
+      `https://p01-product-api-production.up.railway.app/api/user/products/${props.id}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setItemDetailData(data);
+        // console.log(data);
+        // console.log(data.data.cost);
+        props.onGetItemPrice(data.data.cost, props.id);
+      });
+  }, []);
   function quantityChangeHandler(event) {
     setEnteredQuantity(Number(event.target.value) || 0);
     props.onGetItemQuantity(Number(event.target.value) || 0, props.id);
@@ -34,16 +46,16 @@ const Item = (props) => {
       <tr>
         <td className="cart-pic first-row">
           <img
-            src={require(`../../img/cart-page/product-${props.id}.jpg`)}
+            src={itemDetailData?.data.sub_products[0].image_url}
             // src={require(`${props.image}`)}
             alt="Product"
             className="product-img"
           />
         </td>
         <td className="cart-title first-row">
-          <h5>{props.title}</h5>
+          <h5>{itemDetailData?.data.name}</h5>
         </td>
-        <td className="p-price first-row">${props.price} </td>
+        <td className="p-price first-row">{itemDetailData?.data.cost}Đ </td>
         <td className="qua-col first-row">
           <div className="quantity ">
             <div className="pro-qty">
@@ -62,12 +74,11 @@ const Item = (props) => {
           </div>
         </td>
         <td className="total-price first-row">
-          ${props.price * enteredQuantity}
+          {itemDetailData?.data.cost * enteredQuantity}Đ
         </td>
         <td className="close-td first-row">
           <i className="ti-close" onClick={deleteHandler}></i>
         </td>
-        <td className="close-td first-row">Chọn mã</td>
       </tr>
     </React.Fragment>
   );
