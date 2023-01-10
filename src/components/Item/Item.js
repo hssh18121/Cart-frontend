@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 
 const Item = (props) => {
-  const [enteredQuantity, setEnteredQuantity] = useState(1);
+  const [enteredQuantity, setEnteredQuantity] = useState(
+    Number(props.quantity)
+  );
   // useEffect(() => {
   //   setEnteredQuantity(1);
   // }, []);
@@ -14,7 +16,7 @@ const Item = (props) => {
       .then((data) => {
         setItemDetailData(data);
         // console.log(data);
-        // console.log(data.data.cost);
+        console.log(data.data.cost);
         props.onGetItemPrice(data.data.cost, props.id);
       });
   }, []);

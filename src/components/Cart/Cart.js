@@ -11,12 +11,12 @@ const Cart = () => {
 
   useEffect(() => {
     fetch(
-      `https://sp11-cart-backend.000webhostapp.com/api/carts_details/show.php?cart_id=${id}`
+      `https://sp11-cart.000webhostapp.com/api/carts_details/show.php?cart_id=${id}`
     )
       .then((response) => response.json())
       .then((data) => {
         setItems(data.data);
-        // console.log(data);
+        console.log(data);
       });
   }, []);
 
@@ -27,6 +27,8 @@ const Cart = () => {
     setItems((items) => {
       const updatedItems = items.filter((item) => item.product_id !== id);
       // calculatingTotal(updatedItems);
+      const deleteItem = items.find((item) => item.product_id === id);
+      deleteItemAndSave(deleteItem);
       return updatedItems;
     });
   };
@@ -37,6 +39,7 @@ const Cart = () => {
       items[objIndex].quantity = quantity;
       console.log(items[objIndex].quantity);
       calculatingTotal(items);
+      saveCartHandler(items);
       return items;
     });
   };
@@ -53,6 +56,7 @@ const Cart = () => {
   const submitSuccess = (bool) => {
     if (bool) {
       setItems([]);
+      submitSuccessHandler();
       setFinishSubmit(true);
     } else {
       setFinishSubmit(false);
@@ -73,6 +77,87 @@ const Cart = () => {
       return items;
     });
   };
+
+  const saveCartHandler = (items) => {
+    items.map((item) => {
+      (async () => {
+        const rawResponse = await fetch(
+          "https://sp11-cart.000webhostapp.com/api/carts_details/update.php",
+          {
+            method: "POST",
+            // headers: {
+            //   "Content-Type": "application/json",
+
+            // },
+            body: JSON.stringify(item),
+          }
+        );
+        const content = await rawResponse.json();
+
+        console.log(content);
+      })();
+    });
+  };
+
+  const deleteItemAndSave = (item) => {
+    (async () => {
+      const rawResponse = await fetch(
+        "https://sp11-cart.000webhostapp.com/api/carts_details/delete.php",
+        {
+          method: "POST",
+          // headers: {
+          //   "Content-Type": "application/json",
+
+          // },
+          body: JSON.stringify(item),
+        }
+      );
+      const content = await rawResponse.json();
+
+      console.log(content);
+    })();
+  };
+
+  const submitSuccessHandler = () => {
+    items.map((item) => {
+      (async () => {
+        const rawResponse = await fetch(
+          "https://sp11-cart.000webhostapp.com/api/carts_details/delete.php",
+          {
+            method: "POST",
+            // headers: {
+            //   "Content-Type": "application/json",
+
+            // },
+            body: JSON.stringify(item),
+          }
+        );
+        const content = await rawResponse.json();
+
+        console.log(content);
+      })();
+    });
+  };
+  // fetch(`https://sp11-cart.000webhostapp.com/api/carts_details/update.php`, {
+  //   method: "POST",
+  //   crossDomain: true,
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //     Accept: "application/json",
+  //     "Access-Control-Allow-Origin": "*",
+  //   },
+  //   body: JSON.stringify({
+  //     item,
+  //   }),
+  // })
+  //   .then((res) => res.json())
+  //   .then((data) => {
+  //     if (data) {
+  //       console.log("Update successfully");
+  //     } else {
+  //       console.log("Update failed");
+  //     }
+  //   });
 
   return (
     <React.Fragment>
@@ -105,6 +190,9 @@ const Cart = () => {
                   />
                 )}
               </div>
+              {/* <button onClick={saveCartHandler} className="float-right">
+                Lưu thông tin giỏ hàng
+              </button> */}
               {items.length !== 0 && (
                 <CheckoutContainer
                   itemData={items}
