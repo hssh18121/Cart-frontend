@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Table from "../Table/Table";
 import CheckoutContainer from "../CheckoutContainer/CheckoutContainer";
 import { useParams } from "react-router-dom";
-import SaleoffModal from "../Modal/SaleoffModal";
+
 const Cart = () => {
   const { id } = useParams();
   console.log(id);
