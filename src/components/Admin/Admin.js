@@ -23,19 +23,15 @@ const Admin = () => {
 
   const fetchCart = async () => {
     let user_cart = [];
-    let result = await fetch(
-      "https://sp11-cart.000webhostapp.com/api/carts/read.php"
-    );
-    result = await result.json();
-    user_cart = [...user_cart, result.data];
 
-    result = await fetch(
+    let result = await fetch(
       `https://sp11-cart.000webhostapp.com/api/carts_details/count-products-by-uid.php`
     );
     result = await result.json();
     let cart_item = [];
     cart_item = [...cart_item, result.data];
-
+    result.data.forEach((item) => (item.user_id = item.cart_id));
+    user_cart = [...user_cart, result.data];
     let count = 0;
     result = await fetch("https://api-admin-dype.onrender.com/api/login", {
       method: "post",
