@@ -1,27 +1,37 @@
-import React, { useState } from "react";
-import CheckoutForm from "../CheckoutForm/CheckoutForm";
-import validator from "validator";
+import React, { useState, useEffect } from "react";
+
 import SaleoffModal from "../Modal/SaleoffModal";
 import "./CheckoutContainer.css";
 const CheckoutContainer = (props) => {
-  const [validInfo, setValidInfo] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const [userInfo, setUserInfo] = useState();
+  useEffect(() => {
+    (async () => {
+      const rawResponse = await fetch(
+        `https://api-admin-dype.onrender.com/api/user/${props.itemData[0].cart_id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGx0Y3QuY29tIiwiaWF0IjoxNjczNDI4MDkyLCJleHAiOjE2NzM0NzEyOTJ9.P5KRFIvf6NdVSkwGNyfK-KvJfvd0vEsNKeF1vb5tt6Q`,
+          },
+        }
+      );
+      const user = await rawResponse.json();
+      console.log(user);
+      setUserInfo(user);
+    })();
+  }, [props.itemData]);
 
-  const checkValid = (isValid) => {
-    if (isValid) {
-      setValidInfo(true);
-    } else {
-      setValidInfo(false);
-    }
-  };
-
-  const submitHandler = (event) => {
-    if (!validInfo) {
-      event.preventDefault();
-      props.submitSuccess(false);
-    } else {
-      props.submitSuccess(true);
-    }
+  const submitHandler = (e) => {
+    // if (!validInfo) {
+    //   event.preventDefault();
+    //   props.submitSuccess(false);
+    // } else {
+    //   props.submitSuccess(true);
+    // }
+    e.preventDefault();
+    props.submitSuccess(true);
   };
 
   const openModalHandler = () => {
@@ -31,80 +41,13 @@ const CheckoutContainer = (props) => {
   const closeModalHandler = () => {
     setOpenModal(false);
   };
-  const [emptyNameField, setEmptyNameField] = useState(true);
-  const [emptyAddressField, setEmptyAddressField] = useState(true);
-  const [phoneMessage, setPhoneMessage] = useState([false, ""]);
-  const [emailMessage, setEmailMessage] = useState([false, ""]);
 
-  const checkEmptyNameField = (e) => {
-    var input = e.target.value;
-    checkAllValid();
-    if (input.length === 0) {
-      setEmptyNameField(true);
-    } else {
-      setEmptyNameField(false);
-    }
-  };
-
-  const checkEmptyAddressField = (e) => {
-    var input = e.target.value;
-
-    if (input.length === 0) {
-      setEmptyAddressField(true);
-    } else {
-      setEmptyAddressField(false);
-    }
-  };
-
-  const validatePhone = (e) => {
-    var phone = e.target.value;
-    if (phone.length === 0) {
-      setPhoneMessage([false, ""]);
-    } else {
-      if (
-        validator.isMobilePhone(phone) &&
-        (phone.length === 10 || phone[0] === "+")
-      ) {
-        setPhoneMessage([true, ""]);
-      } else {
-        setPhoneMessage([false, "Vui lòng nhập số điện thoại hợp lệ"]);
-      }
-    }
-  };
-
-  const validateEmail = (e) => {
-    var email = e.target.value;
-    if (email.length === 0) {
-      setEmailMessage([false, ""]);
-    } else {
-      if (validator.isEmail(email)) {
-        setEmailMessage([true, ""]);
-      } else {
-        setEmailMessage([false, "Vui lòng nhập vào địa chỉ email hợp lệ"]);
-      }
-    }
-  };
-
-  const checkAllValid = () => {
-    if (
-      !emptyNameField &&
-      !emptyAddressField &&
-      emailMessage[0] &&
-      phoneMessage[0]
-    ) {
-      console.log("abc");
-      setValidInfo(true);
-    } else {
-      console.log("def");
-      setValidInfo(false);
-    }
-  };
   return (
     <React.Fragment>
       {openModal && (
         <SaleoffModal onClose={closeModalHandler} itemData={props.itemData} />
       )}
-      <form className="row remove-margin-left-to-row">
+      <form className="row remove-margin-left-to-row" onSubmit={submitHandler}>
         <div className="display-flex">
           {/* <CheckoutForm checkValid={checkValid} /> */}
           <div class="form-container">
@@ -115,13 +58,12 @@ const CheckoutContainer = (props) => {
                   <input
                     className="input-field"
                     placeholder="Nhập địa chỉ giao hàng"
-                    onChange={(e) => checkEmptyAddressField(e)}
                     required
                   />
                   <input
                     className="input-field"
                     placeholder="Số điện thoại"
-                    onChange={(e) => validatePhone(e)}
+                    defaultValue={userInfo?.phoneNumber}
                     required
                   />
                 </div>
@@ -131,15 +73,15 @@ const CheckoutContainer = (props) => {
                     placeholder="Địa chỉ email"
                     for="email"
                     type="email"
-                    onChange={(e) => validateEmail(e)}
+                    defaultValue={userInfo?.email}
                     required
                   />
 
                   <input
                     className="input-field"
                     placeholder="Họ và tên"
+                    defaultValue={userInfo?.name}
                     required
-                    onChange={(e) => checkEmptyNameField(e)}
                   />
                 </div>
               </div>
@@ -151,23 +93,6 @@ const CheckoutContainer = (props) => {
                   placeholder="Nhập các yêu cầu khác"
                 />
               </div>
-              <div className={phoneMessage[0] ? "text-success" : "text-danger"}>
-                {phoneMessage[1]}
-              </div>
-              <div className={emailMessage[0] ? "text-success" : "text-danger"}>
-                {emailMessage[1]}
-              </div>
-
-              {!emptyNameField &&
-              !emptyAddressField &&
-              emailMessage[0] &&
-              phoneMessage[0] ? (
-                <div className="text-success">Thông tin hợp lệ </div>
-              ) : (
-                <div className="text-danger">
-                  Vui lòng nhập vào thông tin hợp lệ
-                </div>
-              )}
             </div>
           </div>
           <div className="col-lg-4  proceed-checkout add-end-to-proceed-checkout">
@@ -186,7 +111,6 @@ const CheckoutContainer = (props) => {
               type="submit"
               style={{ width: "100%" }}
               className="proceed-btn"
-              onClick={submitHandler}
               value="THANH TOÁN"
             />
           </div>
