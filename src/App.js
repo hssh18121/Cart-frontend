@@ -10,7 +10,7 @@ function App() {
     <Routes>
       <Route path="/Cart-frontend/:id" element={<Cart />} />
       <Route exact path="/home" element={<HomePage />} />
-      <Route exact path="/admin-cart" element={<Admin />} />
+      <Route path="/Cart-frontend/admin-cart" element={<Admin />} />
     </Routes>
   );
 }
