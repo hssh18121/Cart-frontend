@@ -138,26 +138,6 @@ const Cart = () => {
       })();
     });
   };
-  // fetch(`https://sp11-cart.000webhostapp.com/api/carts_details/update.php`, {
-  //   method: "POST",
-  //   crossDomain: true,
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //     Accept: "application/json",
-  //     "Access-Control-Allow-Origin": "*",
-  //   },
-  //   body: JSON.stringify({
-  //     item,
-  //   }),
-  // })
-  //   .then((res) => res.json())
-  //   .then((data) => {
-  //     if (data) {
-  //       console.log("Update successfully");
-  //     } else {
-  //       console.log("Update failed");
-  //     }
-  //   });
 
   return (
     <React.Fragment>
@@ -190,9 +170,6 @@ const Cart = () => {
                   />
                 )}
               </div>
-              {/* <button onClick={saveCartHandler} className="float-right">
-                Lưu thông tin giỏ hàng
-              </button> */}
               {items.length !== 0 && (
                 <CheckoutContainer
                   itemData={items}
