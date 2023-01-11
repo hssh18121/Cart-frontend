@@ -146,10 +146,10 @@ const Cart = () => {
           <div className="row">
             <div className="col-lg-12">
               <div className="breadcrumb-text product-more">
-                <a href="./home.html">
+                <a href="#">
                   <i class="fa fa-home"></i> Trang chủ
                 </a>
-                <a href="./shop.html">Cửa hàng</a>
+                <a href="#">Cửa hàng</a>
                 <span>Giỏ hàng</span>
               </div>
             </div>
