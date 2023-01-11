@@ -2,7 +2,9 @@ const HomePage = () => {
   return (
     <div>
       <h2>Home page</h2>
-      <button>Add to cart</button>
+      <button>
+        <a href="Cart-frontend"> Add to cart</a>
+      </button>
     </div>
   );
 };
