@@ -8,9 +8,9 @@ import HomePage from "./components/HomePage/HomePage";
 function App() {
   return (
     <Routes>
-      <Route path="/Cart-frontend/:id" element={<Cart />} />
+      <Route exact path="/Cart-frontend/:id" element={<Cart />} />
       <Route exact path="/home" element={<HomePage />} />
-      <Route path="/Cart-frontend/admin-cart" element={<Admin />} />
+      <Route exact path="/Cart-frontend/admin-cart" element={<Admin />} />
     </Routes>
   );
 }
