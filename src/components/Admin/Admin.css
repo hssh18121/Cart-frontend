@@ -68,3 +68,35 @@
   cursor: pointer;
   background-color: #efefef;
 }
+
+.adjust-height {
+  height: 100vh;
+}
+
+.display-flex-admin {
+  display: flex;
+}
+
+#adjust-width-and-font-size {
+  font-size: 1.2rem;
+  width: 30%;
+}
+
+#set-height-for-search-bar {
+  width: 50%;
+  margin-bottom: 2rem;
+}
+
+.set-margin-top-2rem {
+  margin-top: 2rem;
+}
+
+.set-title-style {
+  font-weight: 700;
+  margin-top: 3rem;
+  font-size: 3rem;
+}
+
+#add-margin-bottom {
+  margin-bottom: 2rem;
+}
