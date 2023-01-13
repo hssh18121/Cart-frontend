@@ -82,9 +82,10 @@
   width: 30%;
 }
 
-#set-height-for-search-bar {
+#set-size-for-search-bar {
   width: 50%;
   margin-bottom: 2rem;
+  width: min(1200px, 80%);
 }
 
 .set-margin-top-2rem {
@@ -99,4 +100,23 @@
 
 #add-margin-bottom {
   margin-bottom: 2rem;
+}
+
+#dropdown-menu {
+  color: #dee2e6;
+  background-color: #343a40;
+  border-color: rgba(0, 0, 0, 0.15);
+  display: block;
+  position: absolute;
+  inset: auto auto 0px 0px;
+  margin: 0px;
+  transform: translate(0px, -34px);
+}
+
+#dropdown {
+  padding-top: 50vh;
+}
+
+#set-vertical-align-center {
+  vertical-align: middle;
 }

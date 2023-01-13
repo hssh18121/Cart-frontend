@@ -7,6 +7,7 @@ const Admin = () => {
   const [cartList, setCartList] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [availableUser, setAvailableUser] = useState([]);
+  const [toggleDropdownMenu, setToggleDropdownMenu] = useState(false);
   let user_item = [];
 
   const handleChange = (e) => {
@@ -122,6 +123,9 @@ const Admin = () => {
     navigate(path);
   };
 
+  const toggleDropdownMenuHandler = () => {
+    setToggleDropdownMenu(!toggleDropdownMenu);
+  };
   return (
     <React.Fragment>
       <div className="display-flex-admin">
@@ -141,7 +145,7 @@ const Admin = () => {
           <hr />
           <ul class="nav nav-pills flex-column " id="add-margin-bottom">
             <li>
-              <a href="somethingrandom" class="nav-link text-white">
+              <a href="admin-cart" class="nav-link text-white">
                 {/* <svg class="bi me-2" width="16" height="16">
                 <use xlink:href="#speedometer2"></use>
               </svg> */}
@@ -153,7 +157,7 @@ const Admin = () => {
                 {/* <svg class="bi me-2" width="16" height="16">
                 <use xlink:href="#table"></use>
               </svg> */}
-                Orders
+                Charts
               </a>
             </li>
             <li>
@@ -174,13 +178,14 @@ const Admin = () => {
             </li>
           </ul>
           <hr />
-          <div class="dropdown">
+          <div class="dropdown" id="dropdown">
             <a
-              href="somethingrandom"
+              href="#"
               class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
               id="dropdownUser1"
               data-bs-toggle="dropdown"
               aria-expanded="false"
+              onClick={toggleDropdownMenuHandler}
             >
               <img
                 src={"https://github.com/mdo.png"}
@@ -194,19 +199,20 @@ const Admin = () => {
             <ul
               class="dropdown-menu dropdown-menu-dark text-small shadow"
               aria-labelledby="dropdownUser1"
+              id={toggleDropdownMenu ? "dropdown-menu" : ""}
             >
               <li>
-                <a class="dropdown-item" href="somethingrandom">
+                <a class="dropdown-item" href="#">
                   New project...
                 </a>
               </li>
               <li>
-                <a class="dropdown-item" href="somethingrandom">
+                <a class="dropdown-item" href="#">
                   Settings
                 </a>
               </li>
               <li>
-                <a class="dropdown-item" href="somethingrandom">
+                <a class="dropdown-item" href="#">
                   Profile
                 </a>
               </li>
@@ -214,7 +220,9 @@ const Admin = () => {
                 <hr class="dropdown-divider" />
               </li>
               <li>
-                <div class="dropdown-item">Sign out</div>
+                <a class="dropdown-item" href="#">
+                  Sign out
+                </a>
               </li>
             </ul>
           </div>
@@ -239,7 +247,7 @@ const Admin = () => {
           <h2 className=" set-title-style">Admin Screen</h2>
           <div
             class="input-group rounded set-margin-top-2rem"
-            id="set-height-for-search-bar"
+            id="set-size-for-search-bar"
           >
             <input
               type="search"
@@ -267,7 +275,7 @@ const Admin = () => {
             <table class="table">
               <thead class="thead-dark">
                 <tr>
-                  <th>ID</th>
+                  <th id="set-vertical-align-center">ID</th>
                   <th id="adjust-width-and-font-size">Tên khách hàng</th>
                   <th>Email</th>
                   <th id="adjust-width-and-font-size">
