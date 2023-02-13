@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 
 const Cart = () => {
   const { id } = useParams();
-  console.log(id);
+
   const [items, setItems] = useState([]);
 
   useEffect(() => {
@@ -16,7 +16,7 @@ const Cart = () => {
       .then((response) => response.json())
       .then((data) => {
         setItems(data.data);
-        console.log(data);
+        console.log(data.data);
       });
   }, []);
 
@@ -37,7 +37,7 @@ const Cart = () => {
     setItems((items) => {
       const objIndex = items.findIndex((obj) => obj.product_id === id);
       items[objIndex].quantity = quantity;
-      console.log(items[objIndex].quantity);
+
       calculatingTotal(items);
       saveCartHandler(items);
       return items;
@@ -46,7 +46,7 @@ const Cart = () => {
 
   const calculatingTotal = (items) => {
     const total = items.reduce(
-      (sum, { quantity, price }) => sum + price * quantity,
+      (sum, { quantity, price, saleoffPrice }) => sum + saleoffPrice * quantity,
       0
     );
     setTotal(total);
@@ -65,15 +65,43 @@ const Cart = () => {
 
   const getItemPrice = (price, id) => {
     setItems((items) => {
-      const objIndex = items.findIndex((obj) => obj.product_id === id);
+      const objIndex = items.findIndex((obj) => obj.product_id == id);
 
       if (price) {
-        items[objIndex].price = price;
+        if (items[objIndex].saleOffPercent) {
+          items[objIndex].price = price;
+          items[objIndex].saleoffPrice = price * 0.9;
+        } else {
+          items[objIndex].price = price;
+          items[objIndex].saleoffPrice = price;
+        }
       } else {
         items[objIndex].price = 0;
+        items[objIndex].saleoffPrice = 0;
       }
-      console.log(items[objIndex].price);
+
       calculatingTotal(items);
+      return items;
+    });
+  };
+
+  const updateItemPrice = (id, saleOffPercent) => {
+    setItems((items) => {
+      const objIndex = items.findIndex(
+        (obj) => Number(obj.product_id) === Number(id)
+      );
+      console.log(objIndex);
+
+      if (saleOffPercent) {
+        items[objIndex].saleOffPercent = 10;
+
+        getItemPrice(items[objIndex].price, id);
+      } else {
+        items[objIndex].saleOffPercent = 10;
+
+        getItemPrice(items[objIndex].price, id);
+      }
+
       return items;
     });
   };
@@ -146,10 +174,10 @@ const Cart = () => {
           <div className="row">
             <div className="col-lg-12">
               <div className="breadcrumb-text product-more">
-                <a href="#">
+                <a href="/">
                   <i class="fa fa-home"></i> Trang chủ
                 </a>
-                <a href="#">Cửa hàng</a>
+                <a href="/">Cửa hàng</a>
                 <span>Giỏ hàng</span>
               </div>
             </div>
@@ -175,6 +203,7 @@ const Cart = () => {
                   itemData={items}
                   total={total}
                   submitSuccess={submitSuccess}
+                  onUpdatePrice={updateItemPrice}
                 />
               )}
               {items.length === 0 && (

@@ -57,7 +57,7 @@ const Item = (props) => {
         <td className="cart-title first-row">
           <h5>{itemDetailData?.data.name}</h5>
         </td>
-        <td className="p-price first-row">{itemDetailData?.data.cost}Đ </td>
+        <td className="p-price first-row">{props.saleoffPrice}Đ </td>
         <td className="qua-col first-row">
           <div className="quantity ">
             <div className="pro-qty">
@@ -76,7 +76,7 @@ const Item = (props) => {
           </div>
         </td>
         <td className="total-price first-row">
-          {itemDetailData?.data.cost * enteredQuantity}Đ
+          {props.saleoffPrice * enteredQuantity}Đ
         </td>
         <td className="close-td first-row">
           <i className="ti-close" onClick={deleteHandler}></i>

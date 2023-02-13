@@ -13,7 +13,7 @@ const CheckoutContainer = (props) => {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGx0Y3QuY29tIiwiaWF0IjoxNjczNDI4MDkyLCJleHAiOjE2NzM0NzEyOTJ9.P5KRFIvf6NdVSkwGNyfK-KvJfvd0vEsNKeF1vb5tt6Q`,
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGx0Y3QuY29tIiwiaWF0IjoxNjc2MjAxNDI3LCJleHAiOjE2NzYyNDQ2Mjd9.MbWOKS1uf3oVy1CnaBSL9ghzkM5bFe9jSxaxdipLdJk`,
           },
         }
       );
@@ -42,10 +42,18 @@ const CheckoutContainer = (props) => {
     setOpenModal(false);
   };
 
+  const updatePriceHandler = (id, saleOffPercent) => {
+    props.onUpdatePrice(id, saleOffPercent);
+  };
+
   return (
     <React.Fragment>
       {openModal && (
-        <SaleoffModal onClose={closeModalHandler} itemData={props.itemData} />
+        <SaleoffModal
+          onUpdatePrice={updatePriceHandler}
+          onClose={closeModalHandler}
+          itemData={props.itemData}
+        />
       )}
       <form className="row remove-margin-left-to-row" onSubmit={submitHandler}>
         <div className="display-flex">

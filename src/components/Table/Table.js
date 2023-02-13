@@ -23,6 +23,7 @@ const Table = (props) => {
               title={element.title}
               image={element.image}
               price={element.price}
+              saleoffPrice={element.saleoffPrice}
               quantity={element.quantity}
               onDelete={props.onDeleteItem}
               onGetItemQuantity={props.onGetQuantity}
