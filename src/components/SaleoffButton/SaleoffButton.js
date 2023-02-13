@@ -1,8 +1,20 @@
 import React from "react";
 import { useState } from "react";
 const SaleoffButton = (props) => {
+  const saleoffProduct = props.itemData.find(
+    (el) => el.product_id == props.data.product_id
+  );
+  const [apply, setApply] = useState(
+    saleoffProduct.price > saleoffProduct.saleoffPrice ? true : false
+  );
   const calculateSaleOffPrice = (id, saleoffPercent) => {
-    props.onCalculateSaleOffPrice(id, saleoffPercent);
+    if (apply === false) {
+      setApply(true);
+      props.onCalculateSaleOffPrice(id, saleoffPercent);
+    } else {
+      setApply(false);
+      props.onRevertCalculateSaleOffPrice(id);
+    }
   };
   return (
     <React.Fragment>
@@ -14,7 +26,7 @@ const SaleoffButton = (props) => {
           calculateSaleOffPrice(props.data.product_id, props.data.sale_of);
         }}
       >
-        Áp dụng
+        {apply === true ? "Bỏ áp dụng" : "Áp dụng"}
       </button>
     </React.Fragment>
   );

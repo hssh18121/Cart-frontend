@@ -32,6 +32,9 @@ const SaleoffModal = (props) => {
     props.onClose();
   };
 
+  const revertCalculateSaleOffPrice = (id) => {
+    props.onRevertUpdatePrice(id);
+  };
   return (
     <React.Fragment>
       <div className="modal">
@@ -60,8 +63,12 @@ const SaleoffModal = (props) => {
                   <td className="text-align-center">
                     <SaleoffButton
                       onCalculateSaleOffPrice={calculateSaleOffPrice}
+                      onRevertCalculateSaleOffPrice={
+                        revertCalculateSaleOffPrice
+                      }
                       data={data}
                       onClose={props.onClose}
+                      itemData={props.itemData}
                     />
                   </td>
                 </tr>

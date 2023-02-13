@@ -46,11 +46,15 @@ const CheckoutContainer = (props) => {
     props.onUpdatePrice(id, saleOffPercent);
   };
 
+  const revertUpdatePrice = (id) => {
+    props.onRevertUpdatePrice(id);
+  };
   return (
     <React.Fragment>
       {openModal && (
         <SaleoffModal
           onUpdatePrice={updatePriceHandler}
+          onRevertUpdatePrice={revertUpdatePrice}
           onClose={closeModalHandler}
           itemData={props.itemData}
         />

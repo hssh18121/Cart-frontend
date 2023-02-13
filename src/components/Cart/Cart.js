@@ -105,7 +105,19 @@ const Cart = () => {
       return items;
     });
   };
+  const revertUpdatePrice = (id) => {
+    setItems((items) => {
+      const objIndex = items.findIndex(
+        (obj) => Number(obj.product_id) === Number(id)
+      );
+      console.log(objIndex);
+      items[objIndex].saleOffPercent = undefined;
 
+      getItemPrice(items[objIndex].price, id);
+
+      return items;
+    });
+  };
   const saveCartHandler = (items) => {
     items.map((item) => {
       (async () => {
@@ -204,6 +216,7 @@ const Cart = () => {
                   total={total}
                   submitSuccess={submitSuccess}
                   onUpdatePrice={updateItemPrice}
+                  onRevertUpdatePrice={revertUpdatePrice}
                 />
               )}
               {items.length === 0 && (
