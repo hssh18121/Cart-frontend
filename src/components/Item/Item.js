@@ -17,7 +17,8 @@ const Item = (props) => {
         setItemDetailData(data);
         // console.log(data);
         console.log(data.data.cost);
-        props.onGetItemPrice(data.data.cost, props.id);
+        props.onGetItemPrice(data.data.sale_price, props.id);
+        props.onGetItemName(data.data.name, props.id);
       });
   }, []);
   function quantityChangeHandler(event) {

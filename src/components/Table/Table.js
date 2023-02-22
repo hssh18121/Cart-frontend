@@ -28,6 +28,7 @@ const Table = (props) => {
               onDelete={props.onDeleteItem}
               onGetItemQuantity={props.onGetQuantity}
               onGetItemPrice={props.onGetItemPrice}
+              onGetItemName={props.onGetItemName}
             />
           ))}
         </tbody>

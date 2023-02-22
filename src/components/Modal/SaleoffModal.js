@@ -3,24 +3,39 @@ import SaleoffButton from "../SaleoffButton/SaleoffButton";
 import "./SaleoffModal.css";
 const SaleoffModal = (props) => {
   let filterData = [];
+  let userVoucher = [];
   const [saleoffData, setSaleoffData] = useState([]);
+  const [voucherList, setVoucherList] = useState([]);
+
   useEffect(() => {
     fetch("https://team12-ads-app.fly.dev/api/products-sale-price")
       .then((response) => response.json())
       .then((data) => {
         // data.data = data.data.map((data) => (data.key = data.product_id));
-        setSaleoffData(data);
-        console.log(data);
-        // console.log(props.itemData);
+
         props.itemData.forEach((element) => {
           let filter = data.data.find(
             (el) => Number(el.product_id) === Number(element.product_id)
           );
-
+          filter.name = element.name;
           filterData.push(filter);
         });
-        console.log(filterData);
+        // setSaleoffData(filterData);
+      })
+      .then(() => {
         setSaleoffData(filterData);
+      });
+  }, []);
+
+  useEffect(() => {
+    fetch(
+      `https://team12-ads-app.fly.dev/api/vouchers-payment?user_id=${props.userID}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        // data.data = data.data.map((data) => (data.key = data.product_id));
+        console.log(data.voucher_list);
+        setVoucherList(data.voucher_list);
       });
   }, []);
   const closeModalHandler = () => {
@@ -29,7 +44,6 @@ const SaleoffModal = (props) => {
 
   const calculateSaleOffPrice = (id, saleoffPercent) => {
     props.onUpdatePrice(id, saleoffPercent);
-    props.onClose();
   };
 
   const revertCalculateSaleOffPrice = (id) => {
@@ -45,9 +59,9 @@ const SaleoffModal = (props) => {
         <table className="table">
           <thead>
             <tr>
-              <th scope="col">ProductID</th>
+              <th scope="col">Product name</th>
               <th scope="col">Saleoff</th>
-              <th scope="col">Coin</th>
+
               <th scope="col" className="text-align-center">
                 Chọn
               </th>
@@ -57,9 +71,9 @@ const SaleoffModal = (props) => {
             {filterData ? (
               saleoffData.map((data) => (
                 <tr>
-                  <th scope="row">{data.product_id}</th>
-                  <td>{data.sale_of}</td>
-                  <td>{data.coin}</td>
+                  <th scope="row">{data.name}</th>
+                  <td>{data.sale_of}%</td>
+
                   <td className="text-align-center">
                     <SaleoffButton
                       onCalculateSaleOffPrice={calculateSaleOffPrice}
@@ -78,6 +92,37 @@ const SaleoffModal = (props) => {
             )}
           </tbody>
         </table>
+        <h2 className="saleoff-title" style={{ marginTop: "3rem" }}>
+          Voucher người dùng
+        </h2>
+        {/* <table className="table">
+          <thead>
+            <tr>
+              <th scope="col">Voucher Người Dùng</th>
+              <th scope="col">Nội dung</th>
+
+              <th scope="col" className="text-align-center">
+                Chọn
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {filterData ? (
+              voucherList.map((data) => (
+                <tr>
+                  <th scope="row">{data.titlle}</th>
+                  <td>{data.content}%</td>
+
+                  <td className="text-align-center">
+                    <button class="btn btn-secondary">Chọn</button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <p>Không có mã giảm giá cho các sản phẩm này</p>
+            )}
+          </tbody>
+        </table> */}
       </div>
       <div className="overlay" onClick={closeModalHandler}></div>
     </React.Fragment>

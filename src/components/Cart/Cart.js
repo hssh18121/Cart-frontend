@@ -62,7 +62,20 @@ const Cart = () => {
       setFinishSubmit(false);
     }
   };
+  const getItemName = (name, id) => {
+    setItems((items) => {
+      const objIndex = items.findIndex((obj) => obj.product_id == id);
 
+      if (name) {
+        items[objIndex].name = name;
+      } else {
+        items[objIndex].name = "Unknown";
+      }
+
+      calculatingTotal(items);
+      return items;
+    });
+  };
   const getItemPrice = (price, id) => {
     setItems((items) => {
       const objIndex = items.findIndex((obj) => obj.product_id == id);
@@ -70,7 +83,8 @@ const Cart = () => {
       if (price) {
         if (items[objIndex].saleOffPercent) {
           items[objIndex].price = price;
-          items[objIndex].saleoffPrice = price * 0.9;
+          items[objIndex].saleoffPrice =
+            price - (price / 100) * items[objIndex].saleOffPercent;
         } else {
           items[objIndex].price = price;
           items[objIndex].saleoffPrice = price;
@@ -93,11 +107,7 @@ const Cart = () => {
       console.log(objIndex);
 
       if (saleOffPercent) {
-        items[objIndex].saleOffPercent = 10;
-
-        getItemPrice(items[objIndex].price, id);
-      } else {
-        items[objIndex].saleOffPercent = 10;
+        items[objIndex].saleOffPercent = saleOffPercent;
 
         getItemPrice(items[objIndex].price, id);
       }
@@ -157,8 +167,11 @@ const Cart = () => {
       console.log(content);
     })();
   };
-
   const submitSuccessHandler = () => {
+    setFinishSubmit(true);
+  };
+
+  const receivePaymentSuccess = () => {
     items.map((item) => {
       (async () => {
         const rawResponse = await fetch(
@@ -207,12 +220,14 @@ const Cart = () => {
                     onDeleteItem={deleteItemHandler}
                     onGetQuantity={updateItems}
                     onGetItemPrice={getItemPrice}
+                    onGetItemName={getItemName}
                   />
                 )}
               </div>
               {items.length !== 0 && (
                 <CheckoutContainer
                   itemData={items}
+                  userID={id}
                   total={total}
                   submitSuccess={submitSuccess}
                   onUpdatePrice={updateItemPrice}

@@ -7,21 +7,39 @@ const CheckoutContainer = (props) => {
   const [userInfo, setUserInfo] = useState();
   useEffect(() => {
     (async () => {
-      const rawResponse = await fetch(
-        `https://api-admin-dype.onrender.com/api/user/${props.itemData[0].cart_id}`,
+      let result = await fetch(
+        "https://api-admin-dype.onrender.com/api/login",
         {
-          method: "GET",
+          method: "post",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGx0Y3QuY29tIiwiaWF0IjoxNjc2MjAxNDI3LCJleHAiOjE2NzYyNDQ2Mjd9.MbWOKS1uf3oVy1CnaBSL9ghzkM5bFe9jSxaxdipLdJk`,
+          },
+          body: JSON.stringify({
+            email: "admin@ltct.com",
+            password: "123456",
+          }),
+        }
+      );
+
+      result = await result.json();
+      let token = result.access_token;
+      result = await fetch(
+        `https://api-admin-dype.onrender.com/api/user/${props.itemData[0].cart_id}`,
+        {
+          method: "get",
+          headers: {
+            "Content-type": "application/json",
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
+            "Access-Control-Allow-Origin": "*",
           },
         }
       );
-      const user = await rawResponse.json();
+      const user = await result.json();
       console.log(user);
       setUserInfo(user);
     })();
-  }, [props.itemData]);
+  }, []);
 
   const submitHandler = (e) => {
     // if (!validInfo) {
@@ -57,6 +75,7 @@ const CheckoutContainer = (props) => {
           onRevertUpdatePrice={revertUpdatePrice}
           onClose={closeModalHandler}
           itemData={props.itemData}
+          userID={props.itemData[0].cart_id}
         />
       )}
       <form className="row remove-margin-left-to-row" onSubmit={submitHandler}>
